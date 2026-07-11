@@ -109,6 +109,33 @@ Home:CreateButton({
 	end,
 })
 
+Home:CreateSection("FAQ")
+
+Home:CreateFAQ({
+	Items = {
+		{
+			Question = "Why was this fanmade Gen 2 created?",
+			Answer = "So people can experience a Gen 2 style Rayfield right now instead of waiting for the official release. It is a fan project built from zero, not a replacement for the real thing.",
+		},
+		{
+			Question = "Will my existing Rayfield scripts work?",
+			Answer = "Yes. Gen 2 keeps the original Rayfield API, so most scripts load without any changes. Swap the loadstring URL and your window, tabs and elements come up in the new look.",
+		},
+		{
+			Question = "Is this affiliated with Sirius?",
+			Answer = "No. This is a fan remake and has no connection to Sirius or the actual Rayfield developers. The real Rayfield lives at docs.sirius.menu.",
+		},
+		{
+			Question = "Where do I report bugs or suggest features?",
+			Answer = "There is no formal bug tracker or update roadmap. This is a fanmade build whose only goal is to let people experience Gen 2 before the official release, so ongoing updates are not planned. If you still want to share a problem or an idea, the Discord server is the place: https://discord.gg/hXtTC9SVfX",
+		},
+		{
+			Question = "How can I connect with the creator?",
+			Answer = "Join the Discord server at https://discord.gg/hXtTC9SVfX. That is the one place to reach me, whether it is feedback, questions or just to hang out.",
+		},
+	},
+})
+
 Home:CreateSection("Interface")
 
 Home:CreateToggle({
@@ -143,6 +170,76 @@ Numbers:CreateButton({
 	Icon = "sparkles",
 	Callback = function()
 		Stat:Set({Value = "$" .. tostring(math.random(10, 99)), Delta = "+" .. tostring(math.random(1, 30)) .. "%"})
+	end,
+})
+
+Numbers:CreateSection("Charts")
+
+local Revenue = Numbers:CreateChart({
+	Name = "Revenue",
+	Icon = "coins",
+	Prefix = "$",
+	Points = {8200, 8600, 8400, 9300, 9100, 9900, 11400, 12400},
+})
+
+local Players = Numbers:CreateChart({
+	Name = "Players Online",
+	Suffix = " ccu",
+	Filled = false,
+	Points = {120, 180, 160, 260, 310, 290, 380, 430, 410, 540},
+})
+
+Numbers:CreateButton({
+	Name = "Push Data",
+	Icon = "trending-up",
+	Callback = function()
+		Revenue:Push(12400 + math.random(-1500, 2500))
+		Players:Push(540 + math.random(-120, 160))
+	end,
+})
+
+local Session = Numbers:CreateChart({
+	Name = "Session Time",
+	Icon = "activity",
+	Suffix = " min",
+	Smooth = true,
+	Points = {6, 12, 9, 21, 11, 22, 13, 15, 7, 19, 12, 24},
+})
+
+local Kills = Numbers:CreateBarChart({
+	Name = "Kills per Match",
+	Icon = "crosshair",
+	Points = {
+		{Label = "M1", Value = 2},
+		{Label = "M2", Value = 3},
+		{Label = "M3", Value = 5},
+		{Label = "M4", Value = 6},
+		{Label = "M5", Value = 4},
+		{Label = "M6", Value = 3},
+		{Label = "M7", Value = 2},
+	},
+})
+
+Numbers:CreateStackedChart({
+	Name = "Spending",
+	Icon = "wallet",
+	Series = {"Housing", "Food", "Transport"},
+	Rows = {
+		{Name = "Anna", Values = {8, 8, 4}},
+		{Name = "Ben", Values = {12, 10, 8}},
+		{Name = "Clara", Values = {16, 10, 10}},
+		{Name = "David", Values = {20, 24, 6}},
+	},
+})
+
+Numbers:CreateButton({
+	Name = "Show Graph Animation",
+	Icon = "play",
+	Callback = function()
+		Revenue:Replay()
+		Players:Replay()
+		Session:Replay()
+		Kills:Replay()
 	end,
 })
 

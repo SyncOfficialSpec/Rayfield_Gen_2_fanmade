@@ -32,6 +32,8 @@ See `example.lua` for a full demo covering every element.
 * Notifications that auto size, wrap, pause on hover, and dismiss on click
 * Sign in toast that appears when you play on a different account than last time
 * Stat cards with a green gradient for showing values like currency
+* Line, bar and stacked charts with hover crosshairs, rolling values and a build in animation
+* FAQ accordion cards that expand one answer at a time
 * Header badge pill, for things like a language or region tag
 * Key system with saved keys and keys fetched from a site
 
@@ -147,6 +149,69 @@ local Stat = Tab:CreateStat({
 	Delta = "+19%",
 })
 Stat:Set({Value = "$40", Delta = "+90%"})
+```
+
+### FAQ (new in Gen 2)
+
+Accordion cards. Clicking a question expands the card to reveal its answer and the
+plus icon spins into a close mark. Opening one card closes the others, and clicking
+an open question again collapses it.
+
+```lua
+Tab:CreateFAQ({
+	Items = {
+		{Question = "Why was this created?", Answer = "So people can try a Gen 2 style Rayfield before the official release."},
+		{Question = "Will my scripts work?", Answer = "Yes, the API matches original Rayfield."},
+	},
+})
+```
+
+### Charts (new in Gen 2)
+
+Line charts with hover. Moving the mouse over the card snaps a crosshair to the
+nearest point and the value up top rolls to that point. `Filled` draws the area
+under the line, leave it off for a plain line. `Push` appends a point and drops the
+oldest once you reach `MaxPoints`. `Smooth = true` bends the line through the points
+instead of connecting them straight.
+
+```lua
+local Revenue = Tab:CreateChart({
+	Name = "Revenue",
+	Icon = "coins",
+	Prefix = "$",
+	Points = {8200, 8600, 8400, 9300, 9100, 9900, 11400, 12400},
+})
+Revenue:Push(13100)
+Revenue:Replay()
+
+Tab:CreateChart({
+	Name = "Players Online",
+	Suffix = " ccu",
+	Filled = false,
+	Points = {120, 180, 160, 260, 310, 290, 380, 430, 410, 540},
+	MaxPoints = 20,
+})
+```
+
+More chart types work the same way (hover for values, `Set` to update, `Replay` to
+rerun the build in animation). Bar charts take plain numbers or `{Label, Value}`
+pairs and support `Push`. Stacked series pick theme colors automatically, pass
+`Colors` on the chart to override:
+
+```lua
+Tab:CreateBarChart({
+	Name = "Kills per Match",
+	Points = {{Label = "M1", Value = 2}, {Label = "M2", Value = 5}, 6, 4},
+})
+
+Tab:CreateStackedChart({
+	Name = "Spending",
+	Series = {"Housing", "Food", "Transport"},
+	Rows = {
+		{Name = "Anna", Values = {8, 8, 4}},
+		{Name = "Ben", Values = {12, 10, 8}},
+	},
+})
 ```
 
 ### Rows and columns (new in Gen 2)
